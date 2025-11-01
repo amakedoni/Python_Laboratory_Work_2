@@ -1,0 +1,19 @@
+ls -l
+ls
+cat .git
+cat shell.py
+ls
+ls -l
+cd ..
+ls -l
+clear
+exit
+exit
+cat shell.py
+mv lala.txt lala1.txt
+rm lala1.txt
+history
+undo
+undo
+zip core core.zip
+exit

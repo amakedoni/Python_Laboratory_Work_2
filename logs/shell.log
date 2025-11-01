@@ -1,0 +1,17 @@
+[2025-11-01 15:31:13] ls -l ERROR: [WinError 3] Системе не удается найти указанный путь: '-l'
+[2025-11-01 15:31:16] ls  OK
+[2025-11-01 15:31:39] cat .git ERROR: [Errno 13] Permission denied: '.git'
+[2025-11-01 15:31:47] cat shell.py OK
+[2025-11-01 15:37:38] ls  OK
+[2025-11-01 15:37:40] ls -l OK
+[2025-11-01 15:37:51] cd .. OK
+[2025-11-01 15:37:58] shell ERROR: [Errno 2] No such file or directory: 'data\\.history'
+[2025-11-01 15:38:05] shell ERROR: [Errno 2] No such file or directory: 'data\\.history'
+[2025-11-01 15:38:06] shell ERROR: [Errno 2] No such file or directory: 'data\\.history'
+[2025-11-01 15:38:27] ls -l OK
+[2025-11-01 15:38:30] Неизвестная команда: clear
+[2025-11-01 15:39:06] cat shell.py OK
+[2025-11-01 15:39:26] mv lala.txt -> lala1.txt OK
+[2025-11-01 15:39:40] rm lala1.txt OK
+[2025-11-01 15:39:57] undo rm OK
+[2025-11-01 15:40:17] zip core core.zip OK

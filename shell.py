@@ -1,36 +1,63 @@
 import os
-import logging
-from datetime import datetime
-from commands import basic, archive, grep
+from core.commands import ShellCommands
+from core.logger import setup_logger
+from plugins.history import save_command, show_history, undo
+from plugins import archive, grep
 
-LOG_FILE = 'logs/shell.log'
-HISTORY_FILE = 'history.txt'
-
-os.makedirs('logs', exist_ok=True)
-os.makedirs('trash', exist_ok=True)
-
-logging.basicConfig(
-	filename=LOG_FILE,
-	level=logging.INFO,
-	format="[%(asctime)s] %(message)s",
-	datefmt="%Y-%m-%d %H:%M:%S"
-)
-def log(massage):
-	logging.info(massage)
-	print(f"Логи: {massage}")
-
-
-def save_history(command):
-	with open(HISTORY_FILE, 'a', encoding='uft-8') as f:
-		f.write(command + '\n')
+# Настройка логгера
+logger = setup_logger()
+shell = ShellCommands(logger)
 
 def main():
-	print('Мини-shell: Введите команду, для выхода ведите exit')
-	while True:
-		try:
-			cmd = input(f"{os.getcwd()}$ ").strip()
-			if not cmd:
-				continue
-			if cmd == 'exit':
-				break
-		save_history(cmd)
+    while True:
+        try:
+            cmd_input = input("MiniShell > ").strip()
+            if not cmd_input:
+                continue
+
+            # Сохраняем в историю
+            save_command(cmd_input)
+
+            parts = cmd_input.split()
+            cmd = parts[0]
+            args = parts[1:]
+
+            # Основные команды
+            if cmd == "ls":
+                shell.ls(args)
+            elif cmd == "cd":
+                shell.cd(args)
+            elif cmd == "cat":
+                shell.cat(args)
+            elif cmd == "cp":
+                shell.cp(args)
+            elif cmd == "mv":
+                shell.mv(args)
+            elif cmd == "rm":
+                shell.rm(args)
+            elif cmd == "history":
+                show_history()
+            elif cmd == "undo":
+                undo(logger)
+            # Плагины: архивы
+            elif cmd in ("zip", "unzip", "tar", "untar"):
+                archive.handle(cmd, args, logger)
+            # Плагины: поиск по содержимому
+            elif cmd == "grep":
+                grep.handle(args, logger)
+            elif cmd in ("exit", "quit"):
+                print("Выход.")
+                break
+            else:
+                print(f"Неизвестная команда: {cmd}")
+                logger.error(f"Неизвестная команда: {cmd_input}")
+
+        except KeyboardInterrupt:
+            print("\nВыход.")
+            break
+        except Exception as e:
+            print(f"Ошибка: {e}")
+            logger.error(f"shell ERROR: {e}")
+
+if __name__ == "__main__":
+    main()
